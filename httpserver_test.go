@@ -15,12 +15,12 @@ func TestServer(t *testing.T) {
 	srv.Start()
 
 	go func() {
-		t.Log("starting a graceful shutdown on the server")
+		t.Log("starting a graceful shutdown of the server")
 
 		if err := srv.Shutdown(context.TODO()); err == nil {
-			t.Log("server graceful shutdown")
+			t.Log("graceful server shutdown")
 		} else {
-			t.Errorf("no expected error but there is an error: %s", err)
+			t.Errorf("no error expected, but there is an error: %s", err)
 		}
 
 		close(done)
@@ -28,7 +28,11 @@ func TestServer(t *testing.T) {
 
 	err := <-srv.Notify()
 	if err != http.ErrServerClosed {
-		t.Error("expected an error server closed but received nil")
+		t.Errorf(
+			"errors not equals:\n- expected: %s\n- actual: %s",
+			http.ErrServerClosed,
+			err,
+		)
 	}
 
 	<-done
