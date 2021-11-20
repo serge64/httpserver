@@ -17,8 +17,7 @@ func TestServer(t *testing.T) {
 	go func() {
 		t.Log("starting a graceful shutdown on the server")
 
-		err := srv.Shutdown(context.TODO())
-		if err == nil {
+		if err := srv.Shutdown(context.TODO()); err == nil {
 			t.Log("server graceful shutdown")
 		} else {
 			t.Errorf("no expected error but there is an error: %s", err)

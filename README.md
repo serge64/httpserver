@@ -8,7 +8,8 @@ This package is a wrapper around the go standard HTTP server.
 func main() {
     mux := mux.NewServeMux()
     // some code
-    srv := httpserver.New(&http.Server{Handler: mux})
+    server := http.Server{Handler: mux}
+    srv := httpserver.New(&server)
 
     quit := make(chan os.Signal, 1)
     signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
