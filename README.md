@@ -20,7 +20,7 @@ func main() {
 
     select {
     case <-quit:
-        // closed database connections, etc.
+        // closing the database connection, etc.
     case err := <-srv.Notify():
         log.Fatalf("error %s", err)
     }
