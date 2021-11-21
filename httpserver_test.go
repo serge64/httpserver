@@ -12,13 +12,13 @@ func TestServer(t *testing.T) {
 	srv := httpserver.New(&http.Server{})
 	done := make(chan struct{})
 
-	srv.Start()
+	go srv.Start()
 
 	go func() {
 		t.Log("starting a graceful shutdown of the server")
 
 		if err := srv.Shutdown(context.TODO()); err == nil {
-			t.Log("graceful server shutdown")
+			t.Log("server graceful shutdown")
 		} else {
 			t.Errorf("no error expected, but there is an error: %s", err)
 		}

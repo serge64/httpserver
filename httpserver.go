@@ -18,10 +18,9 @@ func New(s *http.Server) Server {
 
 // Start starts listening on the TCP network port.
 func (s Server) Start() {
-	go func() {
-		s.notify <- s.server.ListenAndServe()
-		close(s.notify)
-	}()
+	s.notify <- s.server.ListenAndServe()
+	close(s.notify)
+
 }
 
 // Notify returns channel with server runtime error.

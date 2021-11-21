@@ -5,9 +5,28 @@ This package is a wrapper around the go standard HTTP server.
 ## Example of use
 
 ```go
+package main
+
+import (
+    "context"
+    "log"
+    "net/http"
+    "os"
+    "os/signal"
+    "syscall"
+
+    "github.com/serge64/httpserver"
+)
+
 func main() {
+    if err := run(); err != {
+        log.Fatal(err)
+    }
+}
+
+func run() error {
     mux := mux.NewServeMux()
-    // some code
+    // ...
     server := http.Server{Handler: mux}
     srv := httpserver.New(&server)
 
@@ -15,14 +34,16 @@ func main() {
     signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
     defer signal.Stop(quit)
 
-    srv.Start()
+    go srv.Start()
+
     log.Println("server started")
 
     select {
     case <-quit:
+        log.Println("\nsignal received")
         // closing the database connection, etc.
     case err := <-srv.Notify():
-        log.Fatalf("error %s", err)
+        return err
     }
 
     if err := srv.Shutdown(context.Background()); err != nil {
@@ -30,5 +51,6 @@ func main() {
     }
 
     log.Println("server graceful shutdown")
+    return nil
 }
 ```
